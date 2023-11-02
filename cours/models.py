@@ -34,3 +34,24 @@ class Lesson(models.Model):
     class Meta:
         verbose_name = 'урок'
         verbose_name_plural = 'уроки'
+
+
+class Pay(models.Model):
+
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, **constants.NULLABLE, related_name='pay')
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, **constants.NULLABLE, related_name='pay')
+
+    pay_date = models.DateTimeField( verbose_name='дата оплаты')
+    pay_amount = models.IntegerField(verbose_name='сумма оплаты')
+    payment_method = models.CharField(max_length=70,
+                                      verbose_name='способ оплаты',
+                                      choices=constants.PAY_METHOD,
+                                      **constants.NULLABLE)
+
+    def __str__(self):
+        return f'{self.lesson.title if self.lesson.title else self.course.title}'
+
+    class Meta:
+        verbose_name = 'оплата'
+        verbose_name_plural = 'оплаты'
+        # ordering = ['-pay_date']
