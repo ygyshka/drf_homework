@@ -12,6 +12,13 @@ class LessonSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class LessonCreateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Lesson
+        fields = '__all__'
+
+
 class LessonTitleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
