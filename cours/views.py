@@ -5,7 +5,6 @@ from rest_framework.filters import OrderingFilter
 from cours.models import Course, Lesson, Pay
 from cours.permissions import *
 from cours.serealizers import *
-    # CourseSerializer, LessonSerializer, PaySerializer
 
 
 # Create your views here.
@@ -14,12 +13,19 @@ class CourseViewSet(viewsets.ModelViewSet):
 
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
-    permission_classes = [IsOwnerOrStaff, IsOwner]
+
+    def get_permissions(self):
+        if self.action in ['create', 'delete']:
+            permission_classes = [~IsStaff]
+        else:
+            permission_classes = [~IsStaff & IsOwner]
+        return [permission() for permission in permission_classes]
 
 
 class LessonCreateAPIView(generics.CreateAPIView):
 
     serializer_class = LessonCreateSerializer
+    permission_classes = [~IsStaff]
 
     def perform_create(self, serializer):
         # serializer.save(user=self.request.user)
@@ -36,22 +42,24 @@ class LessonListAPIView(generics.ListAPIView):
 class LessonRetrieveAPIView(generics.RetrieveAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
-    permission_classes = [IsOwner, IsOwnerOrStaff]
+    permission_classes = [~IsStaff & IsOwner]
 
 
 class LessonUpdateAPIView(generics.UpdateAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
-    permission_classes = [IsOwnerOrStaff, IsOwner]
+    permission_classes = [~IsStaff | IsOwner]
 
 
 class LessonDestroyAPIView(generics.DestroyAPIView):
     queryset = Lesson.objects.all()
+    permission_classes = [~IsStaff | IsOwner]
 
 
 class PayCreateAPIView(generics.CreateAPIView):
 
     serializer_class = PaySerializer
+    permission_classes = [IsOwner]
 
 
 class PayListAPIView(generics.ListAPIView):
