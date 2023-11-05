@@ -3,6 +3,7 @@ from rest_framework import viewsets, generics
 from rest_framework.filters import OrderingFilter
 
 from cours.models import Course, Lesson, Pay
+from cours.paginations import NotesPagination
 from cours.permissions import *
 from cours.serealizers import *
 
@@ -13,6 +14,7 @@ class CourseViewSet(viewsets.ModelViewSet):
 
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
+    pagination_class = NotesPagination
 
     def get_permissions(self):
         if self.action in ['create', 'delete']:
@@ -37,6 +39,7 @@ class LessonCreateAPIView(generics.CreateAPIView):
 class LessonListAPIView(generics.ListAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
+    pagination_class = NotesPagination
 
 
 class LessonRetrieveAPIView(generics.RetrieveAPIView):
