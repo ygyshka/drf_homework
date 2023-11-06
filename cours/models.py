@@ -32,7 +32,7 @@ class Lesson(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, **constants.NULLABLE)
 
     def __str__(self):
-        return self.title
+        return f'{self.title} {self.description} {self.video_link}'
 
     class Meta:
         verbose_name = 'урок'
