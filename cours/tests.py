@@ -76,7 +76,7 @@ class CourseTestCase(APITestCase):
 
     def test_lesson_list(self):
         response = self.client.get(f'/lesson/')
-        print(response.json())
+        # print(response.json())
         self.assertEqual(
             response.status_code,
             status.HTTP_200_OK)
