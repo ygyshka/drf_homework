@@ -58,3 +58,16 @@ class Pay(models.Model):
         verbose_name = 'оплата'
         verbose_name_plural = 'оплаты'
         # ordering = ['-pay_date']
+
+
+class Subscription(models.Model):
+    subscribe = models.BooleanField(default=False, verbose_name='подписка')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='subscription')
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, **constants.NULLABLE, related_name='subscription')
+
+    def __str__(self):
+        return f'{self.user} is subscribed to {self.course.title}'
+
+    class Meta:
+        verbose_name = 'подписка'
+        verbose_name_plural = 'подписки'
