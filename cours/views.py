@@ -1,19 +1,11 @@
-from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404
-
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, generics
 from rest_framework.filters import OrderingFilter
-# from rest_framework.permissions import IsAuthenticated
-
-from rest_framework.reverse import reverse
-# from django.urls import reverse
-
 from cours.models import Course, Lesson, Pay, Subscription
 from cours.paginations import NotesPagination
 from cours.permissions import IsStaff, IsOwner
-from cours.serealizers import CourseSerializer, LessonCreateSerializer, LessonSerializer, PaySerializer, \
-    SubscribeSerializer
+from cours.serealizers import (CourseSerializer, LessonCreateSerializer,
+                               LessonSerializer, PaySerializer, SubscribeSerializer)
 
 
 # Create your views here.
@@ -34,7 +26,6 @@ class CourseViewSet(viewsets.ModelViewSet):
             permission_classes = [~IsStaff | IsOwner]
         else:
             permission_classes = [IsStaff | IsOwner]
-        # permission_classes.append(IsAuthenticated)
         return [permission() for permission in permission_classes]
 
 
@@ -88,17 +79,19 @@ class PayListAPIView(generics.ListAPIView):
     ordering_fields = ('pay_date',)
 
 
-class SubscriptionListAPIView(generics.ListAPIView):
+class SubscriptionCreateAPIView(generics.CreateAPIView):
 
     serializer_class = SubscribeSerializer
+
+
+class SubscriptionDestroyAPIView(generics.DestroyAPIView):
+
     queryset = Subscription.objects.all()
 
 
-def subscribe_in(request, pk):
-    course = get_object_or_404(Course, pk=pk)
-    if request.method == 'POST':
-        course.subscribe = True
-        course.save()
-        return HttpResponseRedirect(reverse('cours:lesson-list'))
-    else:
-        return HttpResponseRedirect(reverse('cours:lesson-list'))
+# class SubscriptionDUpdateAPIView(generics.UpdateAPIView):    --- был вариант реализовать изменение подписки
+# так чтобы была какая то история для пользователей, но не удалось додумать как это сделать,
+# вариант с удалением дает то что нужно, насколько я понял задание
+#
+#     serializer_class = SubscribeSerializer
+#     queryset = Subscription.objects.all()
