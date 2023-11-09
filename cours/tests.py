@@ -27,32 +27,6 @@ class CourseTestCase(APITestCase):
         )
         self.lesson.save()
 
-    # def test_create_course(self):
-    #     """ Тестирование создания курса """
-    #
-    #     data = {
-    #         'title': 'Тестовый курс',
-    #         'description': 'Описание курса'
-    #     }
-    #
-    #     response = self.client.post(
-    #         '/cours/',
-    #         data=data
-    #     )
-    #     print(response.json())
-    #     self.assertEqual(
-    #         response.status_code,
-    #         status.HTTP_201_CREATED)
-    #
-    #     self.assertEqual(
-    #         response.json(),
-    #         {'title': 'Тестовый курс', 'description': 'Описание курса', 'lessons_count': 0, 'lesson': []}
-    #     )
-    #
-    #     self.assertTrue(
-    #         Course.objects.all().exists()
-    #     )
-
     def test_lesson_create(self):
         """Тестирование создания урока """
 
