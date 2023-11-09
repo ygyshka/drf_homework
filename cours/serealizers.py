@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
 from rest_framework.relations import SlugRelatedField
 
@@ -36,10 +37,9 @@ class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = ['id', 'user_now', 'title', 'description', 'subscribe', 'user', 'lessons_count', 'lesson']
-        # fields = ['id', 'title', 'description', 'user', 'lessons_count', 'lesson']
 
     def get_user_now(self, obj):
-        return self.context['request'].user.id
+        return self.context['request'].user.email
 
     def get_lessons_count(self, obj):
         return obj.lesson.count()
@@ -48,19 +48,11 @@ class CourseSerializer(serializers.ModelSerializer):
 
         user = self.context['request'].user
         if user.is_authenticated:
-            return obj.subscription.filter(user=user).exists()
-        else:
-            return False
-
-        # sub = Subscription.objects.get(user=obj.user)
-        # print(sub)
-        # if self.context['request'].user == sub.user:
-        # # if Subscription.objects.filter(user=self.context['request'].user, course=obj) is not None:
-        #
-        # # if self.context['request'].user.subscribe:
-        #     return True
-        #
-        # return False
+            try:
+                subscription = obj.subscription.get(user=user)
+                return subscription.subscribe
+            except ObjectDoesNotExist:
+                return False
 
 
 class PaySerializer(serializers.ModelSerializer):
