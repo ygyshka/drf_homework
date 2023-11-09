@@ -130,7 +130,7 @@ class CourseTestCase(APITestCase):
 
     def test_subscription_update(self):
         """Тестирование обновления подписки """
-        
+
         data = {
             'subscribe': False,
             'course': self.course.id
