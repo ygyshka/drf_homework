@@ -93,9 +93,10 @@ class SubscriptionDestroyAPIView(generics.DestroyAPIView):
     permission_classes = [IsOwner]
 
 
-# class SubscriptionDUpdateAPIView(generics.UpdateAPIView):    --- был вариант реализовать изменение подписки
+class SubscriptionUpdateAPIView(generics.UpdateAPIView):
+# --- был вариант реализовать изменение подписки
 # так чтобы была какая то история для пользователей, но не удалось додумать как это сделать,
 # вариант с удалением дает то что нужно, насколько я понял задание
 #
-#     serializer_class = SubscribeSerializer
-#     queryset = Subscription.objects.all()
+    serializer_class = SubscribeSerializer
+    queryset = Subscription.objects.all()

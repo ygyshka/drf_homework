@@ -50,6 +50,7 @@ class CourseSerializer(serializers.ModelSerializer):
         if user.is_authenticated:
             try:
                 subscription = obj.subscription.get(user=user)
+                print(subscription.__dict__)
                 return subscription.subscribe
             except ObjectDoesNotExist:
                 return False

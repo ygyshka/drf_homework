@@ -5,7 +5,7 @@ from cours.views import (CourseViewSet, LessonCreateAPIView,
                          LessonListAPIView, LessonRetrieveAPIView,
                          LessonUpdateAPIView, LessonDestroyAPIView,
                          PayCreateAPIView, PayListAPIView,
-                         SubscriptionCreateAPIView, SubscriptionDestroyAPIView)
+                         SubscriptionCreateAPIView, SubscriptionDestroyAPIView, SubscriptionUpdateAPIView)
 
 app_name = CoursConfig.name
 
@@ -24,6 +24,6 @@ urlpatterns = [
     # subscription
     path('subscription/create', SubscriptionCreateAPIView.as_view(), name='subscription-create'),
     path('subscription/delete/<int:pk>', SubscriptionDestroyAPIView.as_view(), name='subscription-delete'),
-    # path('subscription/update/<int:pk>', SubscriptionUpdateAPIView.as_view(), name='subscription-update'),
+    path('subscription/update/<int:pk>', SubscriptionUpdateAPIView.as_view(), name='subscription-update'),
 
 ] + router.urls
