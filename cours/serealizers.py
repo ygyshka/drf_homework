@@ -3,6 +3,7 @@ from rest_framework import serializers
 from rest_framework.relations import SlugRelatedField
 
 from cours.models import Course, Lesson, Pay, Subscription
+from cours.servises import pay_link
 from cours.validators import LinkValid
 
 
@@ -38,6 +39,7 @@ class CourseSerializer(serializers.ModelSerializer):
         model = Course
         fields = ['id', 'user_now', 'title', 'description', 'subscribe', 'user', 'lessons_count', 'lesson']
 
+
     def get_user_now(self, obj):
         return self.context['request'].user.email
 
@@ -57,10 +59,23 @@ class CourseSerializer(serializers.ModelSerializer):
 
 
 class PaySerializer(serializers.ModelSerializer):
+
+    pay_link = serializers.SerializerMethodField()
+
     class Meta:
         model = Pay
         fields = '__all__'
 
+    def get_pay_link(self, obj):
+        try:
+            if obj.course:
+                title = obj.course.title
+                pay_amount = obj.pay_amount
+                return pay_link(title, pay_amount)
+
+        except ObjectDoesNotExist:
+
+            return ""
 
 class SubscribeSerializer(serializers.ModelSerializer):
 
