@@ -5,7 +5,9 @@ stripe.api_key = constants.STRIPE_API_KEY
 
 
 def pay_link(product_name, product_cost):
-    product = stripe.Product.create(name=product_name)
+    product = stripe.Product.create(
+        name=product_name
+    )
     price = stripe.Price.create(
         unit_amount=product_cost * 100,
         currency="rub",
