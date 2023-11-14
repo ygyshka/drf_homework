@@ -39,7 +39,6 @@ class CourseSerializer(serializers.ModelSerializer):
         model = Course
         fields = ['id', 'user_now', 'title', 'description', 'subscribe', 'user', 'lessons_count', 'lesson']
 
-
     def get_user_now(self, obj):
         return self.context['request'].user.email
 
@@ -76,6 +75,7 @@ class PaySerializer(serializers.ModelSerializer):
         except ObjectDoesNotExist:
 
             return ""
+
 
 class SubscribeSerializer(serializers.ModelSerializer):
 

@@ -1,8 +1,11 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, generics
 from rest_framework.filters import OrderingFilter
+from rest_framework.response import Response
+
 from cours.models import Course, Lesson, Pay, Subscription
 from cours.paginations import NotesPagination
+from cours.tasks import task_send_info_mail
 from cours.permissions import IsStaff, IsOwner
 from cours.serealizers import (CourseSerializer, LessonCreateSerializer,
                                LessonSerializer, PaySerializer, SubscribeSerializer)
@@ -18,6 +21,14 @@ class CourseViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        task_send_info_mail.delay(instance.id)
+        return Response(serializer.data)
 
     def get_permissions(self):
         if self.action == 'create':

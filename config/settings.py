@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'drf_yasg',
+    'django_celery_beat',
     'corsheaders',
     'users',
 
@@ -167,6 +168,13 @@ CELERY_TIMEZONE = TIME_ZONE
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
 
+CELERY_BEAT_SCHEDULE = {
+    'task-name': {
+        'task': 'cours.tasks.check_user_last_login',  # Путь к задаче
+        'schedule': timedelta(seconds=10),  # Расписание выполнения задачи (например, каждые 10 минут)
+    },
+}
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -179,3 +187,11 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.User'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'zelensky-sky@yandex.ru'
+EMAIL_HOST_PASSWORD = 'rsugpeacnrcvgyyr'
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
