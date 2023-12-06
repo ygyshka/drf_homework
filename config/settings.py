@@ -12,10 +12,12 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from datetime import timedelta
 from pathlib import Path
 import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv(BASE_DIR / '.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -119,17 +121,40 @@ WSGI_APPLICATION = 'config.wsgi.application'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
-
+# вариант до начала работы с докером
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'drf_project_h',
+#         'USER': 'postgres',
+#         'PASSWORD': '2112',
+#         'HOST': '127.0.0.1',
+#         'PORT': '5432',
+#     }
+# }
+# до создания файла .env
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'postgres',
+#         'USER': 'postgres',
+#         'PASSWORD': 'mysecretpassword',
+#         'HOST': 'db',
+#         'PORT': '5432',
+#     }
+# }
+# # после создания файла .env
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'drf_project_h',
-        'USER': 'postgres',
-        'PASSWORD': '2112',
-        'HOST': '127.0.0.1',
+        'ENGINE': os.getenv('ENGINE_DB'),
+        'NAME': os.getenv('POSTGRES_DB'),
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'HOST': 'db',
         'PORT': '5432',
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -161,9 +186,10 @@ TIME_ZONE = "Asia/Tomsk"
 USE_I18N = True
 
 # CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
-CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
-# CELERY_RESULT_BACKEND = 'redis://localhost:6379'
-CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379'
+# CELERY_BROKER_URL = "redis://127.0.0.1:6379/0" вариант который был при первоначальной версии
+CELERY_BROKER_URL = "redis://redis:6379/0"
+# CELERY_RESULT_BACKEND = 'redis://localhost:6379'  вариант который решил проверить по ходу просмотра урока
+# CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379'  вариант который был при первоначальной версии
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
