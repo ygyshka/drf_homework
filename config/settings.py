@@ -188,7 +188,6 @@ USE_I18N = True
 # CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
 # CELERY_BROKER_URL = "redis://127.0.0.1:6379/0" вариант который был при первоначальной версии
 CELERY_BROKER_URL = "redis://redis:6379/0"
-# CELERY_RESULT_BACKEND = 'redis://localhost:6379'  вариант который решил проверить по ходу просмотра урока
 # CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379'  вариант который был при первоначальной версии
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_TASK_TRACK_STARTED = True
